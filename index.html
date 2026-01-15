@@ -1,19 +1,54 @@
-<title>CHATBOT ÁLGEBRA – Ejercicios</title>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CHATBOT ÁLGEBRA – Ejercicios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h1>CHATBOT - ÁLGEBRA</h1>
-<h2>CÁTEDRA: VÁZQUEZ MAGNANI</h2>
-<p>Consultá ejercicios y resoluciones de Álgebra</p>
+  <link rel="stylesheet" href="style.css">
 
-<input
-  id="inputPregunta"
-  type="text"
-  placeholder="Ej: resolución ejercicio 5 guía 1"
-  onkeydown="if(event.key==='Enter') buscar()"
-/>
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
 
-<footer>
-  <p>ÁLGEBRA - CBC - FCE - UBA</p>
-  <p>
-    Desarrollado por <strong>ISAIAS TENORIO</strong>
-  </p>
-</footer>
+<body>
+
+  <header>
+    <h1>CHATBOT - ÁLGEBRA</h1>
+    <h2>CÁTEDRA: VÁZQUEZ MAGNANI</h2>
+    <p>Consultá ejercicios y resoluciones de Álgebra</p>
+  </header>
+
+  <main class="chat-wrapper">
+    <div id="chat-container" class="chat-container"></div>
+
+    <div class="chat-input">
+      <input
+        id="inputPregunta"
+        type="text"
+        placeholder="Ej: resolución ejercicio 5 guía 1"
+        onkeydown="if(event.key==='Enter') buscar()"
+      >
+      <button onclick="buscar()">Enviar</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>ÁLGEBRA - CBC - UBA</p>
+    <p>
+      Desarrollado por <strong>ISAIAS TENORIO</strong>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -10,31 +10,9 @@
         "expresiones": ["\\frac{4x-3}{3x+1}>\\frac{4}{3}"],
         "resolucion": [
           "Pasamos todos los términos a un solo miembro.",
-          "$$\\frac{4x-3}{3x+1}-\\frac{4}{3}>0$$",
-          "Unificamos denominador.",
-          "$$\\frac{3(4x-3)-4(3x+1)}{3(3x+1)}>0$$",
-          "Simplificamos el numerador.",
-          "$$\\frac{-13}{3(3x+1)}>0$$",
-          "<strong>PRIMERA OPCION:</strong> Método de Puntos Críticos.",
-          "Los puntos críticos se obtienen cuando el numerador o el denominador se anulan.",
-          "El numerador no se anula, porque es una constante. Entonces",
-          "$$3x+1=0 \\Rightarrow x=-\\frac{1}{3}$$",
-          "Se analizan los intervalos determinados por el punto crítico.",
-          "Dibujás una recta numérica y en ella obtendras los siguientes intervalos .",
-          "$$(-\\infty ; -\\frac{1}{3})$$ y $$(-\\frac{1}{3} ; +\\infty)$$",
-          "La solución es el intervalo:",
-          "$$x \\in (-\\infty;-\\frac{1}{3})$$",
-          "El supremo es $$-\\frac{1}{3}$$",
-          "No existen mínimo ni máximo",
-          "<strong>SEGUNDA OPCION:</strong> Método usando formula.",
-          "Dado que el numerador es constante y negativa, entonces el denominador debe ser negativo. Para que el resultado sea positivo",
-          "$$3x+1<0$$",
-          "$$x<-\\frac{1}{3}$$",
-          "La solución es el intervalo:",
-          "$$x \\in (-\\infty,-\\frac{1}{3})$$",
-          "No existen mínimo ni máximo.",
           "El supremo es $$-\\frac{1}{3}$$"
-      ]
-    }
+        ]
+      }
+    ]
   }
 ]

@@ -1,0 +1,18 @@
+[
+  {
+    "archivo": "Guia 2.pdf",
+    "pagina": 1,
+    "titulo": "Inecuaciones Racionales",
+    "ejercicios": [
+      {
+        "numero": 2,
+        "enunciado": "Escribir el conjunto como intervalo o unión de intervalos y hallar si existen supremo e ínfimo",
+        "expresiones": ["\\frac{4x-3}{3x+1}>\\frac{4}{3}"],
+        "resolucion": [
+          "Pasamos todos los términos a un solo miembro.",
+          "El supremo es $$-\\frac{1}{3}$$"
+        ]
+      }
+    ]
+  }
+]

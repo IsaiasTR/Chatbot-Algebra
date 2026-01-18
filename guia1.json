@@ -2,15 +2,44 @@
   {
     "archivo": "Guia 1.pdf",
     "pagina": 1,
-    "titulo": "Inecuaciones Racionales",
+    "titulo": "Rectas y Planos",
     "ejercicios": [
       {
         "numero": 2,
-        "enunciado": "Escribir el conjunto como intervalo o unión de intervalos y hallar si existen supremo e ínfimo",
-        "expresiones": ["\\frac{4x-3}{3x+1}>\\frac{4}{3}"],
+        "enunciado": "Dadas las rectas L: X=\\alpha(1,1)+(2,0), L' que pasa por A=(0,3) y B=(1,5), y L'': X=\\beta(4,k). Sea P el punto de intersección de L y L'. Hallar el punto P y determinar k de modo que P pertenezca a L''.",
+        "expresiones": [ ],
         "resolucion": [
-          "Pasamos todos los términos a un solo miembro.",
-          "El supremo es $$-\\frac{1}{3}$$"
+            "Escribimos las ecuaciones paramétricas de la recta L:",
+            "$$L: \\begin{cases} x=\\alpha+2 \\\\ y=\\alpha \\end{cases}$$",
+            "Determinamos la ecuación de la recta L' que pasa por A=(0,3) y B=(1,5).",
+            "El vector director es:",
+            "$$\\vec{AB}=(1,2)$$",
+            "Una ecuación paramétrica de L' es:",
+            "$$L': \\begin{cases} x=t \\\\ y=3+2t \\end{cases}$$",
+            "El punto de intersección P satisface ambas rectas.",
+            "Igualamos las coordenadas:",
+            "$$\\alpha+2=t$$",
+            "$$\\alpha=3+2t$$",
+            "Reemplazando $t=\\alpha+2$ en la segunda ecuación:",
+            "$$\\alpha=3+2(\\alpha+2)$$",
+            "$$\\alpha=3+2\\alpha+4$$",
+            "$$\\alpha=-7$$",
+            "Entonces:",
+            "$$t=-5$$",
+            "El punto de intersección es:",
+            "$$P=(-5,-7)$$",
+            "Ahora imponemos que P pertenezca a L'':",
+            "$$L'': X=\\beta(4,k)$$",
+            "Entonces debe existir $\\beta$ tal que:",
+            "$$4\\beta=-5$$",
+            "$$k\\beta=-7$$",
+            "De la primera ecuación:",
+            "$$\\beta=-\\frac{5}{4}$$",
+            "Reemplazando en la segunda:",
+            "$$k\\left(-\\frac{5}{4}\\right)=-7$$",
+            "$$k=\\frac{28}{5}$$",
+            "RESULTADO:",
+            "$$P=(-5,-7), \\quad k=\\frac{28}{5}$$"
         ]
       }
     ]

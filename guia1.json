@@ -6,7 +6,7 @@
     "ejercicios": [
       {
         "numero": 2,
-        "enunciado": "Dadas las rectas L: X=\\alpha(1,1)+(2,0), L' que pasa por A=(0,3) y B=(1,5), y L'': X=\\beta(4,k). Sea P el punto de intersección de L y L'. Hallar el punto P y determinar k de modo que P pertenezca a L''.",
+        "enunciado": "Dadas las rectas L: X=α(1,1)+(2,0), L′ que pasa por A=(0,3) y B=(1,5), y L″: X=β(4,k). Sea P el punto de intersección de L y L′. Hallar el punto P y determinar k de modo que P pertenezca a L″.",
         "expresiones": [ ],
         "resolucion": [
             "Escribimos las ecuaciones paramétricas de la recta L:",

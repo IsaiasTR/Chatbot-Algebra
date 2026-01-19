@@ -41,7 +41,28 @@
             "RESULTADO:",
             "$$P=(-5,-7), \\quad k=\\frac{28}{5}$$"
         ]
-      }
+      },
+      {
+        "numero": 4,
+        "enunciado": "L₁ es la recta que pasa por (1,-4) y (3,-1), L₂ es la recta de dirección (5,2) que pasa por (-5,-3) y Q es el punto de L₂ que pertenece al eje x. Hallar una ecuación paramétrica de una recta paralela a L₁ que pase por Q.",
+        "expresiones": [ ],
+        "resolucion": [
+              "Calculamos el vector director de L₁ restando los puntos dados.",
+              "$$\\vec v_1 = (3-1,\\,-1-(-4)) = (2,3)$$",
+              "Al ser paralela a L₁, la recta buscada tendrá como vector director a $(2,3)$.",
+              "Hallamos el punto Q de L₂ que pertenece al eje x.",
+              "La recta L₂ tiene ecuación paramétrica:",
+              "$$(x,y)=(-5,-3)+t(5,2)$$",
+              "Como Q pertenece al eje x, su coordenada $y$ es 0.",
+              "$$-3+2t=0 \\Rightarrow t=\\frac{3}{2}$$",
+              "Reemplazamos en la coordenada $x$.",
+              "$$x=-5+5\\cdot\\frac{3}{2}=\\frac{5}{2}$$",
+              "Luego, el punto Q es:",
+              "$$Q=\\left(\\frac{5}{2},0\\right)$$",
+              "La ecuación paramétrica de la recta pedida es:",
+              "$$(x,y)=\\left(\\frac{5}{2},0\\right)+\\lambda(2,3)$$" 
+        ]
+      }  
     ]
   }
 ]

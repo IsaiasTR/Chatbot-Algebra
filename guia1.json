@@ -62,7 +62,27 @@
               "La ecuación paramétrica de la recta pedida es:",
               "$$(x,y)=\\left(\\frac{5}{2},0\\right)+\\lambda(2,3)$$" 
         ]
-      }  
+      },
+      {
+        "numero": 6,
+        "enunciado": "Sean L₁ la recta que pasa por A=(1,a) y B=(-5,0), L₂ la recta de ecuación X=γ(-12,4)+(3,7). Hallar el valor de a para que L₁ sea paralela a L₂.",
+        "expresiones": [ ],
+        "resolucion": [
+              "La recta L₁ pasa por A=(1,a) y B=(-5,0). Su vector director es:",
+              "$$\\vec v_1 = B - A = (-5-1,\\;0-a)=(-6,-a)$$",
+              "La recta L₂ tiene ecuación vectorial $$X=γ(-12,4)+(3,7)$$, por lo tanto su vector director es:",
+              "$$\\vec v_2 = (-12,4)$$",
+              "Para que L₁ sea paralela a L₂, sus vectores directores deben ser proporcionales:",
+              "$$\\vec v_1 = k\\,\\vec v_2$$",
+              "Entonces:",
+              "$$ (-6,-a)=k(-12,4) $$",
+              "De la primera componente:",
+              "$$ -6 = -12k \\Rightarrow k=\\frac{1}{2} $$",
+              "De la segunda componente:",
+              "$$ -a = 4k = 4\\cdot\\frac{1}{2}=2 $$",
+              "**Resultado:** $$a=-2$$"
+        ]
+      }
     ]
   }
 ]

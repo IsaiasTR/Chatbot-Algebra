@@ -85,7 +85,7 @@
       },
       {
         "numero": 8,
-        "enunciado": "Sean L = γ(3,3,-2) + (3,-2,1), π : 3x + y + 4z = 7, P = L ∩ π y Q = (3,2,1). Dar una ecuación de la recta L' determinada por P y Q y hallar analíticamente dos puntos, distintos de P y Q, que pertenezcan a L'."
+        "enunciado": "Sean L = γ(3,3,-2) + (3,-2,1), π : 3x + y + 4z = 7, P = L ∩ π y Q = (3,2,1). Dar una ecuación de la recta L' determinada por P y Q y hallar analíticamente dos puntos, distintos de P y Q, que pertenezcan a L'.",
         "expresiones": [ ],
         "resolucion": [
               "Escribimos la recta L en forma paramétrica:",

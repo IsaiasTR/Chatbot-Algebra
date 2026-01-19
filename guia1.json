@@ -82,6 +82,29 @@
               "$$ -a = 4k = 4\\cdot\\frac{1}{2}=2 $$",
               "**Resultado:** $$a=-2$$"
         ]
+      },
+      {
+        "numero": 8,
+        "enunciado": "Sean L = γ(3,3,-2) + (3,-2,1), π : 3x + y + 4z = 7, P = L ∩ π y Q = (3,2,1). Dar una ecuación de la recta L' determinada por P y Q y hallar analíticamente dos puntos, distintos de P y Q, que pertenezcan a L'."
+        "expresiones": [ ],
+        "resolucion": [
+              "Escribimos la recta L en forma paramétrica:",
+              "x = 3γ + 3, y = 3γ - 2, z = -2γ + 1",
+              "Hallamos el punto de intersección P entre L y el plano π sustituyendo en su ecuación:",
+              "3(3γ+3) + (3γ-2) + 4(-2γ+1) = 7",
+              "9γ + 9 + 3γ - 2 - 8γ + 4 = 7",
+              "4γ + 11 = 7",
+              "γ = -1",
+              "Reemplazando γ = -1 en L:",
+              "P = (0,-5,3)",
+              "Dado Q = (3,2,1), el vector director de L' es:",
+              "v = Q - P = (3,7,-2)",
+              "Entonces una ecuación paramétrica de la recta L' es:",
+              "L' : X = (0,-5,3) + t(3,7,-2)",
+              "Para hallar dos puntos distintos de P y Q, tomamos valores de t:",
+              "Si t = 1 → (3,2,1)",
+              "Si t = 2 → (6,9,-1)"
+        ]
       }
     ]
   }

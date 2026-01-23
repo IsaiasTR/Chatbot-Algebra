@@ -91,7 +91,7 @@
               "Reducimos la paramétrica a un punto:",
               "(x;y;z)=λ (3;3;-2)+(3;-2;1)",
               "(x;y;z)=(3λ ;3λ ;-2λ )+(3;-2;1)",
-              "(x;y;z)=(3λ +3;3λ -2;-2λ +1)"
+              "(x;y;z)=(3λ +3;3λ -2;-2λ +1)",
               "x = 3λ + 3, y = 3λ  - 2, z = -2λ  + 1",
               "Hallamos el punto de intersección P entre L y el plano π sustituyendo en su ecuación:",
               "3(3λ +3) + (3λ -2) + 4(-2λ +1) = 7",

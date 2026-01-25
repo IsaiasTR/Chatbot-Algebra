@@ -211,5 +211,5 @@ function buscar() {
     } else {
       mensajeBot(respuesta);
     }
-  }, 6000);
+  }, 5000);
 }

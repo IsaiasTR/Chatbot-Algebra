@@ -1,179 +1,104 @@
-let ejercicios = [];
-
 /* ===============================
-   CARGA DE MÚLTIPLES JSON
+   VARIABLES
 ================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const archivos = [
-    "guia1.json",
-    "guia2.json"
-  ];
+const chatContainer = document.querySelector(".chat-container");
+const input = document.querySelector(".chat-input input");
+const button = document.querySelector(".chat-input button");
 
-  Promise.all(
-    archivos.map(a => fetch(a).then(r => r.json()))
-  )
-    .then(data => {
-      ejercicios = data.flat();
-
-      mensajeBot(
-        "Hola 👋 Soy Isaias-Bot, el asistente virtual de <strong>Álgebra</strong>.<br>" +
-        "Cátedra: <strong>Vázquez Magnani</strong>.<br><br>" +
-        "Podés buscar así:<br>" +
-        "<em>ejercicio 2 guia 1</em>, <em>ejercicio 4 guia 2</em>"
-      );
-    })
-    .catch(() => {
-      mensajeBot("❌ Error al cargar los ejercicios.");
-    });
-});
+const BOT_NAME = "Isaias-Bot";
+const TIEMPO_ESCRIBIENDO = 1200; // ms (ajustable)
 
 /* ===============================
-   MENSAJES
+   SONIDO ARTIFICIAL SUAVE
 ================================ */
 
-function mensajeUsuario(texto) {
-  const chat = document.getElementById("chat-container");
-  const div = document.createElement("div");
-  div.className = "mensaje usuario";
-  div.textContent = texto;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
+let audioContext;
 
-function mensajeBot(html) {
-  const chat = document.getElementById("chat-container");
-  const div = document.createElement("div");
-  div.className = "mensaje bot";
-  div.innerHTML = html;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-
-  if (window.MathJax) {
-    MathJax.typesetPromise();
+function playTypingSound() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
   }
+
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = 750; // tono suave
+  gain.gain.value = 0.04;    // volumen bajo
+
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+
+  osc.start();
+  osc.stop(audioContext.currentTime + 0.07);
 }
 
 /* ===============================
-   ANIMACIÓN ESCRIBIENDO
+   FUNCIONES DE MENSAJES
 ================================ */
 
-let escribiendoDiv = null;
+function agregarMensaje(texto, clase) {
+  const div = document.createElement("div");
+  div.classList.add("mensaje", clase);
+  div.innerHTML = texto;
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 function mostrarEscribiendo() {
-  const chat = document.getElementById("chat-container");
-  escribiendoDiv = document.createElement("div");
-  escribiendoDiv.className = "mensaje bot escribiendo";
-  escribiendoDiv.innerHTML = "<em>Isaias-Bot está escribiendo...</em>";
-  chat.appendChild(escribiendoDiv);
-  chat.scrollTop = chat.scrollHeight;
+  const div = document.createElement("div");
+  div.classList.add("mensaje", "bot", "escribiendo");
+  div.id = "typing-indicator";
+
+  div.innerHTML = `<strong>${BOT_NAME}</strong> está escribiendo<span class="dots"></span>`;
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  // sonido leve repetido
+  playTypingSound();
+  setTimeout(playTypingSound, 300);
+  setTimeout(playTypingSound, 600);
 }
 
-function ocultarEscribiendo() {
-  if (escribiendoDiv) {
-    escribiendoDiv.remove();
-    escribiendoDiv = null;
-  }
+function eliminarEscribiendo() {
+  const typing = document.getElementById("typing-indicator");
+  if (typing) typing.remove();
 }
 
 /* ===============================
-   BÚSQUEDA
+   RESPUESTA DEL BOT (DEMO)
 ================================ */
 
-function buscar() {
-  const input = document.getElementById("inputPregunta");
-  const textoOriginal = input.value.trim();
-  const texto = textoOriginal.toLowerCase();
+function respuestaBot(mensajeUsuario) {
+  // Acá después podés conectar tus JSON, IA, etc.
+  return `Recibí tu mensaje: <strong>${mensajeUsuario}</strong>`;
+}
 
-  if (!texto) return;
+/* ===============================
+   EVENTOS
+================================ */
 
-  mensajeUsuario(textoOriginal);
+function enviarMensaje() {
+  const texto = input.value.trim();
+  if (texto === "") return;
+
+  agregarMensaje(texto, "usuario");
   input.value = "";
 
   mostrarEscribiendo();
 
-  let respuesta = "";
-
-  const numeroMatch = texto.match(/\d+/);
-  const numeroEjercicio = numeroMatch ? parseInt(numeroMatch[0]) : null;
-
-  const guiaMatch = texto.match(/guia\s*(\d+)/);
-  const numeroGuia = guiaMatch ? guiaMatch[1] : null;
-
-  /* ===== CONTAR COINCIDENCIAS ===== */
-  let coincidencias = 0;
-
-  ejercicios.forEach(bloque => {
-    bloque.ejercicios.forEach(ej => {
-      if (
-        numeroEjercicio === ej.numero &&
-        ej.resolucion
-      ) {
-        coincidencias++;
-      }
-    });
-  });
-
-  /* ===== AMBIGÜEDAD ===== */
-  if (numeroEjercicio && !numeroGuia && coincidencias > 1) {
-    ocultarEscribiendo();
-    mensajeBot(
-      "Ese ejercicio aparece en más de una guía.<br><br>" +
-      "Por favor, especificá el número de guía.<br>" +
-      "Ejemplo: <em>ejercicio 2 guia 1</em>"
-    );
-    return;
-  }
-
-  /* ===== BÚSQUEDA ===== */
-  ejercicios.forEach(bloque => {
-
-    if (
-      numeroGuia &&
-      !bloque.archivo.toLowerCase().includes(`guia ${numeroGuia}`)
-    ) {
-      return;
-    }
-
-    bloque.ejercicios.forEach(ej => {
-
-      if (
-        numeroEjercicio === ej.numero &&
-        ej.resolucion
-      ) {
-        respuesta += `<strong>${bloque.titulo}</strong> (pág. ${bloque.pagina})<br>`;
-        respuesta += `<strong>Ejercicio ${ej.numero}:</strong><br>`;
-        respuesta += `<strong>${ej.enunciado}</strong><br><br>`;
-
-        if (ej.expresiones) {
-          ej.expresiones.forEach(e => {
-            respuesta += `$$${e}$$`;
-          });
-          respuesta += "<br>";
-        }
-
-        respuesta += "<strong>Resolución:</strong><ul>";
-        ej.resolucion.forEach(r => {
-          respuesta += `<li>${r}</li>`;
-        });
-        respuesta += "</ul><br>";
-      }
-    });
-  });
-
-  /* ===== RESPUESTA CON DELAY ===== */
   setTimeout(() => {
-    ocultarEscribiendo();
-
-    if (respuesta === "") {
-      mensajeBot(
-        "No encontré información para esa consulta.<br><br>" +
-        "Probá con:<br>" +
-        "• ejercicio 2 guia 1<br>" +
-        "• ejercicio 4 guia 2"
-      );
-    } else {
-      mensajeBot(respuesta);
-    }
-  }, 1500); // ⏱️ delay aumentado
+    eliminarEscribiendo();
+    const respuesta = respuestaBot(texto);
+    agregarMensaje(`<strong>${BOT_NAME}</strong><br>${respuesta}`, "bot");
+  }, TIEMPO_ESCRIBIENDO);
 }
+
+button.addEventListener("click", enviarMensaje);
+
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    enviarMensaje();
+  }
+});

@@ -1,31 +1,6 @@
 let ejercicios = [];
 
 /* ===============================
-   AUDIO ARTIFICIAL SUAVE
-================================ */
-
-let audioCtx = null;
-
-function sonidoEscribiendo() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.type = "sine";
-  osc.frequency.value = 720;   // tono suave tipo WhatsApp
-  gain.gain.value = 0.035;     // volumen bajo
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.08);
-}
-
-/* ===============================
    CARGA DE MÚLTIPLES JSON
 ================================ */
 
@@ -80,37 +55,66 @@ function mensajeBot(html) {
 }
 
 /* ===============================
+   SONIDO SUAVE (SOFT BUBBLE)
+================================ */
+
+let audioCtx = null;
+
+function playTypingSound() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = 520;
+
+  gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    audioCtx.currentTime + 0.12
+  );
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.12);
+}
+
+/* ===============================
    ANIMACIÓN ESCRIBIENDO
 ================================ */
 
 let escribiendoDiv = null;
-let sonidoInterval = null;
+let typingInterval = null;
 
 function mostrarEscribiendo() {
   const chat = document.getElementById("chat-container");
 
   escribiendoDiv = document.createElement("div");
   escribiendoDiv.className = "mensaje bot escribiendo";
-  escribiendoDiv.innerHTML =
-    "<strong>Isaias-Bot</strong> está escribiendo<span class='dots'></span>";
+  escribiendoDiv.innerHTML = "<strong>Isaias-Bot</strong> está escribiendo<span class='dots'>...</span>";
 
   chat.appendChild(escribiendoDiv);
   chat.scrollTop = chat.scrollHeight;
 
-  // 🔊 sonido sincronizado con los puntos
-  sonidoEscribiendo();
-  sonidoInterval = setInterval(sonidoEscribiendo, 350);
+  // sonido sincronizado (no molesto)
+  playTypingSound();
+  typingInterval = setInterval(playTypingSound, 900);
 }
 
 function ocultarEscribiendo() {
+  if (typingInterval) {
+    clearInterval(typingInterval);
+    typingInterval = null;
+  }
+
   if (escribiendoDiv) {
     escribiendoDiv.remove();
     escribiendoDiv = null;
-  }
-
-  if (sonidoInterval) {
-    clearInterval(sonidoInterval);
-    sonidoInterval = null;
   }
 }
 
@@ -138,6 +142,7 @@ function buscar() {
   const guiaMatch = texto.match(/guia\s*(\d+)/);
   const numeroGuia = guiaMatch ? guiaMatch[1] : null;
 
+  /* ===== CONTAR COINCIDENCIAS ===== */
   let coincidencias = 0;
 
   ejercicios.forEach(bloque => {
@@ -148,6 +153,7 @@ function buscar() {
     });
   });
 
+  /* ===== AMBIGÜEDAD ===== */
   if (numeroEjercicio && !numeroGuia && coincidencias > 1) {
     ocultarEscribiendo();
     mensajeBot(
@@ -158,6 +164,7 @@ function buscar() {
     return;
   }
 
+  /* ===== BÚSQUEDA ===== */
   ejercicios.forEach(bloque => {
 
     if (
@@ -190,6 +197,7 @@ function buscar() {
     });
   });
 
+  /* ===== RESPUESTA CON DELAY ===== */
   setTimeout(() => {
     ocultarEscribiendo();
 
@@ -203,5 +211,5 @@ function buscar() {
     } else {
       mensajeBot(respuesta);
     }
-  }, 2000); // delay original
+  }, 1500);
 }

@@ -169,5 +169,5 @@ function buscar() {
       mensajeBot(respuesta);
     }
 
-  }, 900); // ⏱️ delay de escritura (ms)
+  }, 1500); // ⏱️ delay de escritura (ms)
 }

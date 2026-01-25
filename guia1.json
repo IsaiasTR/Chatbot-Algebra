@@ -128,6 +128,7 @@
               "A = (-10,0,0)"
         ]
       },
+      {
         "numero": 12,
         "enunciado": "Sean L₁ la recta que pasa por P = (11,-2,8) y Q = (4,-5,9) y L₂ la recta de ecuación X = α(28,12,-4) + (9,7,5). Dar una ecuación paramétrica de L₁ y determinar si L₁ es paralela a L₂.",
         "expresiones": [ ],

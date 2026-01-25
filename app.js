@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
       mensajeBot(
         "Hola 👋 Soy Isaias-Bot, el asistente virtual de <strong>Álgebra</strong>.<br>" +
         "Cátedra: <strong>Vázquez Magnani</strong>.<br><br>" +
-        "Podés buscar de la siguiente forma (ej: <em>resolución ejercicio 3 guía 1</em>)"
+        "Podés buscar así:<br>" +
+        "<em>ejercicio 2 guia 1</em>, <em>ejercicio 4 guia 2</em>"
       );
     })
     .catch(() => {
@@ -53,19 +54,26 @@ function mensajeBot(html) {
   }
 }
 
-function mensajeBotEscribiendo() {
+/* ===============================
+   ANIMACIÓN ESCRIBIENDO
+================================ */
+
+let escribiendoDiv = null;
+
+function mostrarEscribiendo() {
   const chat = document.getElementById("chat-container");
-  const div = document.createElement("div");
-  div.className = "mensaje bot escribiendo";
-  div.id = "bot-escribiendo";
-  div.textContent = "Isaias-Bot está escribiendo...";
-  chat.appendChild(div);
+  escribiendoDiv = document.createElement("div");
+  escribiendoDiv.className = "mensaje bot escribiendo";
+  escribiendoDiv.innerHTML = "<em>Isaias-Bot está escribiendo...</em>";
+  chat.appendChild(escribiendoDiv);
   chat.scrollTop = chat.scrollHeight;
 }
 
-function borrarEscribiendo() {
-  const escribiendo = document.getElementById("bot-escribiendo");
-  if (escribiendo) escribiendo.remove();
+function ocultarEscribiendo() {
+  if (escribiendoDiv) {
+    escribiendoDiv.remove();
+    escribiendoDiv = null;
+  }
 }
 
 /* ===============================
@@ -82,92 +90,90 @@ function buscar() {
   mensajeUsuario(textoOriginal);
   input.value = "";
 
-  mensajeBotEscribiendo();
+  mostrarEscribiendo();
 
-  setTimeout(() => {
+  let respuesta = "";
 
-    borrarEscribiendo();
+  const numeroMatch = texto.match(/\d+/);
+  const numeroEjercicio = numeroMatch ? parseInt(numeroMatch[0]) : null;
 
-    let respuesta = "";
+  const guiaMatch = texto.match(/guia\s*(\d+)/);
+  const numeroGuia = guiaMatch ? guiaMatch[1] : null;
 
-    const pedirResolucion =
-      texto.includes("resolucion") || texto.includes("resolución");
+  /* ===== CONTAR COINCIDENCIAS ===== */
+  let coincidencias = 0;
 
-    const numeroMatch = texto.match(/\d+/);
-    const numeroEjercicio = numeroMatch ? parseInt(numeroMatch[0]) : null;
-
-    const guiaMatch = texto.match(/guia\s*(\d+)/);
-    const numeroGuia = guiaMatch ? guiaMatch[1] : null;
-
-    let coincidencias = 0;
-
-    ejercicios.forEach(bloque => {
-      bloque.ejercicios.forEach(ej => {
-        if (pedirResolucion && numeroEjercicio === ej.numero && ej.resolucion) {
-          coincidencias++;
-        }
-      });
+  ejercicios.forEach(bloque => {
+    bloque.ejercicios.forEach(ej => {
+      if (
+        numeroEjercicio === ej.numero &&
+        ej.resolucion
+      ) {
+        coincidencias++;
+      }
     });
+  });
 
-    if (pedirResolucion && !numeroGuia && coincidencias > 1) {
-      mensajeBot(
-        "Ese ejercicio aparece en más de una guía.<br><br>" +
-        "Indicá la guía. Ejemplo:<br>" +
-        "<em>resolución ejercicio 3 guía 1</em>"
-      );
+  /* ===== AMBIGÜEDAD ===== */
+  if (numeroEjercicio && !numeroGuia && coincidencias > 1) {
+    ocultarEscribiendo();
+    mensajeBot(
+      "Ese ejercicio aparece en más de una guía.<br><br>" +
+      "Por favor, especificá el número de guía.<br>" +
+      "Ejemplo: <em>ejercicio 2 guia 1</em>"
+    );
+    return;
+  }
+
+  /* ===== BÚSQUEDA ===== */
+  ejercicios.forEach(bloque => {
+
+    if (
+      numeroGuia &&
+      !bloque.archivo.toLowerCase().includes(`guia ${numeroGuia}`)
+    ) {
       return;
     }
 
-    ejercicios.forEach(bloque => {
+    bloque.ejercicios.forEach(ej => {
 
       if (
-        numeroGuia &&
-        !bloque.archivo.toLowerCase().includes(`guia ${numeroGuia}`)
-      ) return;
+        numeroEjercicio === ej.numero &&
+        ej.resolucion
+      ) {
+        respuesta += `<strong>${bloque.titulo}</strong> (pág. ${bloque.pagina})<br>`;
+        respuesta += `<strong>Ejercicio ${ej.numero}:</strong><br>`;
+        respuesta += `<strong>${ej.enunciado}</strong><br><br>`;
 
-      bloque.ejercicios.forEach(ej => {
-
-        const contenido =
-          bloque.titulo + " " +
-          ej.enunciado + " " +
-          (ej.expresiones ? ej.expresiones.join(" ") : "");
-
-        if (
-          pedirResolucion &&
-          numeroEjercicio === ej.numero &&
-          ej.resolucion
-        ) {
-          respuesta += `<strong>${bloque.titulo}</strong> (pág. ${bloque.pagina})<br>`;
-          respuesta += `<strong>Ejercicio ${ej.numero}:</strong><br>`;
-          respuesta += `<strong>${ej.enunciado}</strong><br><br>`;
-
-          if (ej.expresiones) {
-            ej.expresiones.forEach(e => {
-              respuesta += `$$${e}$$`;
-            });
-            respuesta += "<br>";
-          }
-
-          respuesta += "<strong>Resolución:</strong><ul>";
-          ej.resolucion.forEach(r => {
-            respuesta += `<li>${r}</li>`;
+        if (ej.expresiones) {
+          ej.expresiones.forEach(e => {
+            respuesta += `$$${e}$$`;
           });
-          respuesta += "</ul><br>";
+          respuesta += "<br>";
         }
 
-        if (!pedirResolucion && contenido.toLowerCase().includes(texto)) {
-          respuesta += `<strong>${bloque.titulo}</strong><br>`;
-          respuesta += `<strong>Ejercicio ${ej.numero}</strong><br>`;
-          respuesta += `${ej.enunciado}<br><br>`;
-        }
-      });
+        respuesta += "<strong>Resolución:</strong><ul>";
+        ej.resolucion.forEach(r => {
+          respuesta += `<li>${r}</li>`;
+        });
+        respuesta += "</ul><br>";
+      }
     });
+  });
+
+  /* ===== RESPUESTA CON DELAY ===== */
+  setTimeout(() => {
+    ocultarEscribiendo();
 
     if (respuesta === "") {
-      mensajeBot("No encontré resultados para esa consulta.");
+      mensajeBot(
+        "No encontré información para esa consulta.<br><br>" +
+        "Probá con:<br>" +
+        "• ejercicio 2 guia 1<br>" +
+        "• ejercicio 4 guia 2"
+      );
     } else {
       mensajeBot(respuesta);
     }
-
-  }, 1500); // ⏱️ delay de escritura (ms)
+  }, 1500); // ⏱️ delay aumentado
 }

@@ -86,10 +86,17 @@ header p {
   box-shadow: 0 2px 5px rgba(0,0,0,0.08);
 }
 
-/* Mensaje "está escribiendo" */
-.escribiendo {
+/* ===============================
+   MENSAJE "ESTÁ ESCRIBIENDO"
+================================ */
+
+.mensaje.bot.escribiendo {
   font-style: italic;
+  font-weight: bold;
   color: #6b7280;
+  background: transparent;
+  box-shadow: none;
+  padding: 8px 12px;
 }
 
 /* ===============================

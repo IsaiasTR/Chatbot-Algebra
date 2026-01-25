@@ -108,7 +108,26 @@
               "Si t = 10 → (30,65,-17)",
               "Si t = -10 → (-30,-75,23)"
         ]
-      }
+      },
+      {
+        "numero": 10,
+        "enunciado": "Sea el plano π : αx - y + z = 5. Hallar la intersección de π con el eje x sabiendo que P = (-8,0,1) pertenece a π.",
+        "expresiones": [ ],
+        "resolucion": [
+              "Como el punto P = (-8,0,1) pertenece al plano π, lo reemplazamos en su ecuación para hallar α:",
+              "α(-8) - 0 + 1 = 5",
+              "-8α + 1 = 5",
+              "-8α = 4",
+              "α = -1/2",
+              "Entonces la ecuación del plano es:",
+              "-(1/2)x - y + z = 5",
+              "Para hallar la intersección con el eje x, recordamos que sobre el eje x se cumple y = 0 y z = 0:",
+              "-(1/2)x = 5",
+              "x = -10",
+              "Por lo tanto, el punto de intersección del plano π con el eje x es:",
+              "A = (-10,0,0)"
+        ]
+      }  
     ]
   }
 ]

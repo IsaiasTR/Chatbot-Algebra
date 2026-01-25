@@ -144,7 +144,28 @@
               "Como los cocientes son iguales, los vectores son proporcionales.",
               "Por lo tanto, las rectas L₁ y L₂ son paralelas."
          ]
-       }
+       },
+       {
+        "numero": 14,
+        "enunciado": "Sean L la recta que pasa por los puntos P = (-1,4,-1) y Q = (-3,7,0). Hallar los valores de a y b para que el punto R = (a,b,5) pertenezca a L.",
+        "expresiones": [ ],
+        "resolucion": [
+             "Calculamos el vector director de la recta L:",
+             "v = Q − P = (-3 − (-1), 7 − 4, 0 − (-1)) = (-2, 3, 1)",
+             "Entonces una ecuación paramétrica de L es:",
+             "L : X = (-1,4,-1) + λ(-2,3,1)",
+             "Escribimos las ecuaciones paramétricas:",
+             "x = -1 − 2λ, y = 4 + 3λ, z = -1 + λ",
+             "Imponemos la condición de que el punto R = (a,b,5) pertenezca a L:",
+             "-1 + λ = 5",
+             "λ = 6",
+             "Reemplazamos λ = 6 en las demás ecuaciones:",
+             "a = -1 − 2·6 = -13",
+             "b = 4 + 3·6 = 22",
+             "Por lo tanto, los valores buscados son:",
+             "a = -13 y b = 22"
+        ]
+      }
     ]
   }
 ]

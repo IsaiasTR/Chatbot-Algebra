@@ -127,7 +127,23 @@
               "Por lo tanto, el punto de intersección del plano π con el eje x es:",
               "A = (-10,0,0)"
         ]
-      }  
+      },
+        "numero": 12,
+        "enunciado": "Sean L₁ la recta que pasa por P = (11,-2,8) y Q = (4,-5,9) y L₂ la recta de ecuación X = α(28,12,-4) + (9,7,5). Dar una ecuación paramétrica de L₁ y determinar si L₁ es paralela a L₂.",
+        "expresiones": [ ],
+        "resolucion": [
+              "Calculamos el vector director de L₁ restando los puntos Q y P:",
+              "v₁ = Q − P = (4−11, −5−(−2), 9−8) = (−7, −3, 1)",
+              "Entonces una ecuación paramétrica de la recta L₁ es:",
+              "L₁ : X = (11,−2,8) + λ(−7,−3,1)",
+              "El vector director de L₂ es:",
+              "v₂ = (28,12,−4)",
+              "Comparamos v₁ y v₂ para ver si son proporcionales:",
+              "28 / (−7) = −4, 12 / (−3) = −4, −4 / 1 = −4",
+              "Como los cocientes son iguales, los vectores son proporcionales.",
+              "Por lo tanto, las rectas L₁ y L₂ son paralelas."
+        ]
+      }
     ]
   }
 ]

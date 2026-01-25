@@ -1,104 +1,207 @@
-/* ===============================
-   VARIABLES
-================================ */
-
-const chatContainer = document.querySelector(".chat-container");
-const input = document.querySelector(".chat-input input");
-const button = document.querySelector(".chat-input button");
-
-const BOT_NAME = "Isaias-Bot";
-const TIEMPO_ESCRIBIENDO = 1200; // ms (ajustable)
+let ejercicios = [];
 
 /* ===============================
-   SONIDO ARTIFICIAL SUAVE
+   AUDIO ARTIFICIAL SUAVE
 ================================ */
 
-let audioContext;
+let audioCtx = null;
 
-function playTypingSound() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+function sonidoEscribiendo() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
-  const osc = audioContext.createOscillator();
-  const gain = audioContext.createGain();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
 
   osc.type = "sine";
-  osc.frequency.value = 750; // tono suave
-  gain.gain.value = 0.04;    // volumen bajo
+  osc.frequency.value = 720;   // tono suave tipo WhatsApp
+  gain.gain.value = 0.035;     // volumen bajo
 
   osc.connect(gain);
-  gain.connect(audioContext.destination);
+  gain.connect(audioCtx.destination);
 
   osc.start();
-  osc.stop(audioContext.currentTime + 0.07);
+  osc.stop(audioCtx.currentTime + 0.08);
 }
 
 /* ===============================
-   FUNCIONES DE MENSAJES
+   CARGA DE MÚLTIPLES JSON
 ================================ */
 
-function agregarMensaje(texto, clase) {
+document.addEventListener("DOMContentLoaded", () => {
+  const archivos = [
+    "guia1.json",
+    "guia2.json"
+  ];
+
+  Promise.all(
+    archivos.map(a => fetch(a).then(r => r.json()))
+  )
+    .then(data => {
+      ejercicios = data.flat();
+
+      mensajeBot(
+        "Hola 👋 Soy Isaias-Bot, el asistente virtual de <strong>Álgebra</strong>.<br>" +
+        "Cátedra: <strong>Vázquez Magnani</strong>.<br><br>" +
+        "Podés buscar así:<br>" +
+        "<em>ejercicio 2 guia 1</em>, <em>ejercicio 4 guia 2</em>"
+      );
+    })
+    .catch(() => {
+      mensajeBot("❌ Error al cargar los ejercicios.");
+    });
+});
+
+/* ===============================
+   MENSAJES
+================================ */
+
+function mensajeUsuario(texto) {
+  const chat = document.getElementById("chat-container");
   const div = document.createElement("div");
-  div.classList.add("mensaje", clase);
-  div.innerHTML = texto;
-  chatContainer.appendChild(div);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  div.className = "mensaje usuario";
+  div.textContent = texto;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
 }
+
+function mensajeBot(html) {
+  const chat = document.getElementById("chat-container");
+  const div = document.createElement("div");
+  div.className = "mensaje bot";
+  div.innerHTML = html;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+
+  if (window.MathJax) {
+    MathJax.typesetPromise();
+  }
+}
+
+/* ===============================
+   ANIMACIÓN ESCRIBIENDO
+================================ */
+
+let escribiendoDiv = null;
+let sonidoInterval = null;
 
 function mostrarEscribiendo() {
-  const div = document.createElement("div");
-  div.classList.add("mensaje", "bot", "escribiendo");
-  div.id = "typing-indicator";
+  const chat = document.getElementById("chat-container");
 
-  div.innerHTML = `<strong>${BOT_NAME}</strong> está escribiendo<span class="dots"></span>`;
-  chatContainer.appendChild(div);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  escribiendoDiv = document.createElement("div");
+  escribiendoDiv.className = "mensaje bot escribiendo";
+  escribiendoDiv.innerHTML =
+    "<strong>Isaias-Bot</strong> está escribiendo<span class='dots'></span>";
 
-  // sonido leve repetido
-  playTypingSound();
-  setTimeout(playTypingSound, 300);
-  setTimeout(playTypingSound, 600);
+  chat.appendChild(escribiendoDiv);
+  chat.scrollTop = chat.scrollHeight;
+
+  // 🔊 sonido sincronizado con los puntos
+  sonidoEscribiendo();
+  sonidoInterval = setInterval(sonidoEscribiendo, 350);
 }
 
-function eliminarEscribiendo() {
-  const typing = document.getElementById("typing-indicator");
-  if (typing) typing.remove();
+function ocultarEscribiendo() {
+  if (escribiendoDiv) {
+    escribiendoDiv.remove();
+    escribiendoDiv = null;
+  }
+
+  if (sonidoInterval) {
+    clearInterval(sonidoInterval);
+    sonidoInterval = null;
+  }
 }
 
 /* ===============================
-   RESPUESTA DEL BOT (DEMO)
+   BÚSQUEDA
 ================================ */
 
-function respuestaBot(mensajeUsuario) {
-  // Acá después podés conectar tus JSON, IA, etc.
-  return `Recibí tu mensaje: <strong>${mensajeUsuario}</strong>`;
-}
+function buscar() {
+  const input = document.getElementById("inputPregunta");
+  const textoOriginal = input.value.trim();
+  const texto = textoOriginal.toLowerCase();
 
-/* ===============================
-   EVENTOS
-================================ */
+  if (!texto) return;
 
-function enviarMensaje() {
-  const texto = input.value.trim();
-  if (texto === "") return;
-
-  agregarMensaje(texto, "usuario");
+  mensajeUsuario(textoOriginal);
   input.value = "";
 
   mostrarEscribiendo();
 
-  setTimeout(() => {
-    eliminarEscribiendo();
-    const respuesta = respuestaBot(texto);
-    agregarMensaje(`<strong>${BOT_NAME}</strong><br>${respuesta}`, "bot");
-  }, TIEMPO_ESCRIBIENDO);
-}
+  let respuesta = "";
 
-button.addEventListener("click", enviarMensaje);
+  const numeroMatch = texto.match(/\d+/);
+  const numeroEjercicio = numeroMatch ? parseInt(numeroMatch[0]) : null;
 
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    enviarMensaje();
+  const guiaMatch = texto.match(/guia\s*(\d+)/);
+  const numeroGuia = guiaMatch ? guiaMatch[1] : null;
+
+  let coincidencias = 0;
+
+  ejercicios.forEach(bloque => {
+    bloque.ejercicios.forEach(ej => {
+      if (numeroEjercicio === ej.numero && ej.resolucion) {
+        coincidencias++;
+      }
+    });
+  });
+
+  if (numeroEjercicio && !numeroGuia && coincidencias > 1) {
+    ocultarEscribiendo();
+    mensajeBot(
+      "Ese ejercicio aparece en más de una guía.<br><br>" +
+      "Por favor, especificá el número de guía.<br>" +
+      "Ejemplo: <em>ejercicio 2 guia 1</em>"
+    );
+    return;
   }
-});
+
+  ejercicios.forEach(bloque => {
+
+    if (
+      numeroGuia &&
+      !bloque.archivo.toLowerCase().includes(`guia ${numeroGuia}`)
+    ) {
+      return;
+    }
+
+    bloque.ejercicios.forEach(ej => {
+      if (numeroEjercicio === ej.numero && ej.resolucion) {
+
+        respuesta += `<strong>${bloque.titulo}</strong> (pág. ${bloque.pagina})<br>`;
+        respuesta += `<strong>Ejercicio ${ej.numero}:</strong><br>`;
+        respuesta += `<strong>${ej.enunciado}</strong><br><br>`;
+
+        if (ej.expresiones) {
+          ej.expresiones.forEach(e => {
+            respuesta += `$$${e}$$`;
+          });
+          respuesta += "<br>";
+        }
+
+        respuesta += "<strong>Resolución:</strong><ul>";
+        ej.resolucion.forEach(r => {
+          respuesta += `<li>${r}</li>`;
+        });
+        respuesta += "</ul><br>";
+      }
+    });
+  });
+
+  setTimeout(() => {
+    ocultarEscribiendo();
+
+    if (respuesta === "") {
+      mensajeBot(
+        "No encontré información para esa consulta.<br><br>" +
+        "Probá con:<br>" +
+        "• ejercicio 2 guia 1<br>" +
+        "• ejercicio 4 guia 2"
+      );
+    } else {
+      mensajeBot(respuesta);
+    }
+  }, 2000); // delay original
+}

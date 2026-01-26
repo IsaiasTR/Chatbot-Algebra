@@ -165,6 +165,34 @@
              "Por lo tanto, los valores buscados son:",
              "a = -13 y b = 22"
         ]
+      },
+      {
+        "numero": 16,
+        "enunciado": "Sean la recta L : X = λ(1,a,2) + (2,6,4) y el plano π : x - y + 2z = 5. Determinar a ∈ ℝ para que la recta L pase por el origen de coordenadas y hallar la intersección de L y π.",
+        "expresiones": [ ],
+        "resolucion": [
+              "Para que la recta L pase por el origen (0,0,0), debe existir un valor de λ tal que:",
+              "(1) λ·1 + 2 = 0",
+              "(2) λ·a + 6 = 0",
+              "(3) λ·2 + 4 = 0",
+              "De la ecuación (1): λ = -2",
+              "Verificamos con la ecuación (3): 2(-2) + 4 = 0, se cumple",
+              "Usamos λ = -2 en la ecuación (2):",
+              "-2a + 6 = 0",
+              "a = 3",
+              "Por lo tanto, para a = 3 la recta L pasa por el origen.",
+              "Con a = 3, escribimos las ecuaciones paramétricas de L:",
+              "x = λ + 2, y = 3λ + 6, z = 2λ + 4",
+              "Hallamos la intersección entre L y el plano π sustituyendo en su ecuación:",
+              "(λ + 2) - (3λ + 6) + 2(2λ + 4) = 5",
+              "λ + 2 - 3λ - 6 + 4λ + 8 = 5",
+              "2λ + 4 = 5",
+              "λ = 1/2",
+              "Reemplazando λ = 1/2 en las ecuaciones de la recta:",
+              "x = 5/2, y = 15/2, z = 5",
+              "El punto de intersección entre L y π es:",
+              "P = (5/2, 15/2, 5)"
+        ]
       }
     ]
   }
